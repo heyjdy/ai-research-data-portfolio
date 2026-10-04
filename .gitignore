@@ -1,0 +1,17 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Local environment & secrets — never commit
+.env
+.env.*
+
+# Logs, caches & temp files
+*.log
+tmp/
+node_modules/
+__pycache__/
+*.pyc
