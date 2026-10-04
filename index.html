@@ -74,7 +74,7 @@
       <div class="kpi-card"><span class="kpi-number">20</span><span class="kpi-label">products compared</span></div>
       <div class="kpi-card"><span class="kpi-number">22 → 20</span><span class="kpi-label">raw records after de-duplication</span></div>
       <div class="kpi-card"><span class="kpi-number">18</span><span class="kpi-label">standardized data fields</span></div>
-      <div class="kpi-card"><span class="kpi-number">6</span><span class="kpi-label">cleaning examples documented</span></div>
+      <div class="kpi-card"><span class="kpi-number">7</span><span class="kpi-label">cleaning examples documented</span></div>
     </div>
 
     <div class="two-col">
@@ -251,14 +251,17 @@
   <div class="container">
     <p class="overline">05 · Clean structured dataset</p>
     <h2>20 products, normalized and decision-ready</h2>
-    <p class="section-lead">Search and filter the cleaned table. Every value follows one convention: USD per user / month,
-      ISO dates, Yes / Trial only / No, eight standard categories.</p>
+    <p class="section-lead">Search and filter the cleaned table. Every value follows one convention: USD per month
+      (per-user where the source states it), ISO dates, Yes / Trial only / No, eight standard categories — and nothing
+      the sources don't state.</p>
 
     <div class="conf-legend">
       <span class="legend-title">Data confidence:</span>
-      <span class="badge badge-high">High</span><span class="legend-text">two sources agree or official info is clear</span>
-      <span class="badge badge-med">Medium</span><span class="legend-text">single source or derived value</span>
+      <span class="badge badge-high">High</span><span class="legend-text">official product source with clear values, or two agreeing records</span>
+      <span class="badge badge-med">Medium</span><span class="legend-text">secondhand source (directory/review) or derived values</span>
       <span class="badge badge-low">Needs verification</span><span class="legend-text">conflicting or unclear</span>
+      <span class="legend-title" style="margin-left:8px">Source status:</span>
+      <span class="legend-text">counts raw records, not trust — 2 products have two records; the rest have one</span>
     </div>
 
     <div class="filter-bar">
@@ -289,7 +292,7 @@
         <tbody id="cleanBody"><!-- filled by app.js --></tbody>
       </table>
     </div>
-    <p class="table-footnote">* USD per user / month · SummarEase is flat-priced ($6.99 total) and ChronoBase is annual-billing
+    <p class="table-footnote">* USD per month; per-user basis where stated (see Billing Model) · SummarEase is flat-priced ($6.99 total) and ChronoBase is annual-billing
       only ($9.00/mo equivalent) — see Billing Model in the full file. Showing 9 of 18 fields ·
       full dataset: <a href="data/cleaned_research_data.csv" download>cleaned_research_data.csv</a></p>
   </div>
@@ -328,7 +331,7 @@
       <div class="chart-card">
         <h3>Starting price distribution</h3>
         <div class="bars" id="chartPrice"></div>
-        <p class="chart-note">Pricing clusters in the $6–$14.99 band; the median sits at $9.50 per user / month.</p>
+        <p class="chart-note">Pricing clusters in the $6–$14.99 band; the median sits at $9.50 / month.</p>
       </div>
       <div class="chart-card">
         <h3>Free plan availability</h3>
@@ -358,7 +361,7 @@
 
     <div class="finding-grid">
       <div class="finding-card"><span class="finding-stat">70%</span><h3>Pricing clusters in the middle band</h3>
-        <p>14 of 20 products charge $6–$14.99 per user / month (median $9.50). Automation ($19.99) and meeting
+        <p>14 of 20 products charge $6–$14.99 / month (median $9.50). Automation ($19.99) and meeting
           intelligence ($15.00) price highest; simple kanban and note-taking price lowest ($4.99–$5.50).</p></div>
       <div class="finding-card"><span class="finding-stat">70%</span><h3>The buyer is a small one</h3>
         <p>8 of 20 target individuals &amp; freelancers, 6 target small teams / SMB. Only 2 claim an individual-to-enterprise
@@ -370,11 +373,11 @@
         <p>Bundling (all-in-one workspaces), workflow depth (automation, AI forecasting), and AI-assisted
           planning / summarization. Price is the most crowded lever; only 1 of 20 competes on flat non-per-seat pricing.</p></div>
       <div class="finding-card"><span class="finding-stat">65%</span><h3>Free plans are the norm — tightly capped</h3>
-        <p>13 of 20 offer a free tier, typically limited by usage caps (3 projects, 5 meetings/mo, daily summary limits)
+        <p>13 of 20 offer a free tier, typically limited by usage caps (5 meetings/mo, daily caps, limited automation runs, 1 free project)
           rather than removed features. Only 2 products have no free access at all.</p></div>
       <div class="finding-card"><span class="finding-stat">Gaps</span><h3>Where the sample is underserved</h3>
         <p>No enterprise-grade option and no mobile-first product appear (2 of 20 lack a mobile app entirely).
-          Transparent AI usage limits are rare, and annual-discount terms are often undocumented.</p></div>
+          Transparent AI usage limits are rare, and annual-billing terms are stated for only 1 of 20 products.</p></div>
     </div>
   </div>
 </section>
@@ -387,22 +390,21 @@
     <p class="section-lead">The checklist applied to every row before this deliverable was considered finished.</p>
 
     <div class="qc-grid">
-      <div class="qc-item"><span class="qc-check">✓</span><div><h3>Source recorded</h3><p>Every fact traceable to a dated source — all 22 raw records carry source type + last-checked date.</p></div></div>
+      <div class="qc-item"><span class="qc-check">✓</span><div><h3>Source recorded</h3><p>Each cleaned row maps to its raw record (R01–R22), each with a source type and last-checked date; derived or uncertain values are documented.</p></div></div>
       <div class="qc-item"><span class="qc-check">✓</span><div><h3>Duplicate checked</h3><p>Two duplicate listings (R21, R22) matched on name + website and merged with a log entry.</p></div></div>
-      <div class="qc-item"><span class="qc-check">✓</span><div><h3>Pricing normalized</h3><p>All prices in USD per user / month; annual-only converted ($108/yr → $9.00/mo) and documented.</p></div></div>
+      <div class="qc-item"><span class="qc-check">✓</span><div><h3>Pricing normalized</h3><p>All prices normalized to USD per month (per-user where stated); annual-only converted ($108/yr → $9.00/mo) and documented.</p></div></div>
       <div class="qc-item"><span class="qc-check">✓</span><div><h3>Missing values flagged</h3><p>Unknowns are marked in Notes — never guessed, never silently dropped.</p></div></div>
       <div class="qc-item"><span class="qc-check">✓</span><div><h3>Unclear claims marked for verification</h3><p>WorkWhale (price conflict) and GoalGrid (unclear platforms) carry "Needs verification".</p></div></div>
-      <div class="qc-item"><span class="qc-check">✓</span><div><h3>No unsupported assumptions</h3><p>The two assumptions made (FocusForge billing cycle, ChronoBase conversion) are written into Notes.</p></div></div>
+      <div class="qc-item"><span class="qc-check">✓</span><div><h3>No unsupported assumptions</h3><p>Values the sources don't state were removed in a field-by-field traceability audit; remaining derivations (FocusForge monthly assumption, ChronoBase conversion) are documented in Notes.</p></div></div>
       <div class="qc-item"><span class="qc-check">✓</span><div><h3>Dates standardized</h3><p>All last-checked dates converted to ISO 8601 (YYYY-MM-DD) for sorting and freshness checks.</p></div></div>
-      <div class="qc-item"><span class="qc-check">✓</span><div><h3>Final manual review completed</h3><p>All 20 cleaned rows reviewed end-to-end for consistency before delivery.</p></div></div>
+      <div class="qc-item"><span class="qc-check">✓</span><div><h3>Final review completed</h3><p>Dataset consistency was reviewed during project QA — every cleaned row re-audited field-by-field against its raw record.</p></div></div>
     </div>
 
     <div class="panel panel-wide">
       <h3>The verification stance</h3>
-      <p>Speed is only useful if the output can be trusted. Where two sources disagreed, the conflict is still visible
-        in the data. Where a value was derived (an annual price divided by 12) or assumed, the derivation is written
-        next to it. A client can audit any figure in this project back to a record ID — that is the standard this
-        workflow holds itself to.</p>
+      <p>Speed is only useful if the output can be trusted. Where sources disagreed or were unclear, the conflict or gap
+        is still visible in the data. Where a value was derived or assumed, the derivation is written next to it. Each
+        cleaned row maps back to a raw record ID — that is the standard this workflow holds itself to.</p>
     </div>
   </div>
 </section>
@@ -459,8 +461,8 @@
       <div class="exec-block">
         <h3>Notable patterns</h3>
         <ul>
-          <li>Per-seat pricing is near-universal (19 of 20); flat pricing is a rarity, not a trend.</li>
-          <li>Annual discounts are common (13 of 20) but inconsistently documented.</li>
+          <li>17 of 20 state per-seat pricing; 2 don't specify the pricing basis; 1 is flat (SummarEase).</li>
+          <li>Annual-billing terms are stated for only 1 of 20 (InBoxZero); 1 product is annual-billing-only (ChronoBase).</li>
           <li>Free-tier limits favor usage caps over feature removals — a low-friction trial path.</li>
           <li>All-in-one workspaces bundle broadly, while niche tools win on workflow depth.</li>
         </ul>
@@ -480,7 +482,7 @@
           <li>WorkWhale pricing — $14 (official page) vs $12 (directory); conflict unresolved.</li>
           <li>GoalGrid mobile platform availability — source list unclear.</li>
           <li>MindMesh pricing — single source only.</li>
-          <li>Annual discount rates for products listed as "available" without published terms.</li>
+          <li>Annual-discount terms: only InBoxZero states one; the rate is unpublished.</li>
           <li>Specific AI model / usage limits behind vague "AI assistant" claims.</li>
         </ul>
       </div>
@@ -496,12 +498,12 @@
     <p class="section-lead">Exactly what was used to build this project — no certifications or expertise claimed beyond what it demonstrates.</p>
 
     <div class="tool-grid">
-      <div class="tool-card"><h3>ChatGPT</h3><p>AI-assisted field extraction, terminology normalization, and summary drafting. All AI output was human-reviewed before entering the dataset.</p></div>
-      <div class="tool-card"><h3>Google Search / web research</h3><p>Source-gathering technique demonstrated here on simulated sources — same query strategy, source-typing, and dating habits as on live research.</p></div>
-      <div class="tool-card"><h3>Excel / Google Sheets</h3><p>Core spreadsheet workflow: TRIM / PROPER / text-to-columns for cleaning, COUNTIF and pivot tables for the counts, filters and conditional formatting for review.</p></div>
-      <div class="tool-card"><h3>Python (pandas, openpyxl)</h3><p>Built the demo datasets, generated the formatted workbook, and computed every summary statistic so the files cannot drift apart.</p></div>
+      <div class="tool-card"><h3>ChatGPT</h3><p>AI-assisted field extraction, terminology normalization, and summary drafting. A human-verification checkpoint is built into the workflow, and dataset consistency was reviewed during project QA.</p></div>
+      <div class="tool-card"><h3>Web-research workflow</h3><p>Simulated source gathering with source typing, date tracking, and a verification structure — the workflow shape used on live research, demonstrated here on fictional sources.</p></div>
+      <div class="tool-card"><h3>CSV / Excel deliverables</h3><p>The comparison ships as CSV and a formatted XLSX. Workbook values are calculated in Python (openpyxl) rather than live formulas, so the numbers cannot drift from the CSVs.</p></div>
+      <div class="tool-card"><h3>Python + openpyxl</h3><p>Built the demo datasets, generated the formatted workbook, and computed every summary statistic so the files cannot drift apart.</p></div>
       <div class="tool-card"><h3>HTML / CSS / JavaScript</h3><p>This report page and its live dashboard — charts are computed in the browser from the same dataset as the CSV files.</p></div>
-      <div class="tool-card"><h3>Spreadsheet formulas</h3><p>Basic, auditable formulas (SUM, MEDIAN, COUNTIF, VLOOKUP-style lookups) — chosen so a client could rebuild the numbers themselves.</p></div>
+      <div class="tool-card"><h3>QA &amp; verification</h3><p>Dataset consistency was reviewed during project QA; every cleaned row was re-audited field-by-field against its raw record before publication.</p></div>
     </div>
   </div>
 </section>

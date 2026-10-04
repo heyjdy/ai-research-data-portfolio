@@ -216,9 +216,9 @@ readme_rows = [
     ["Before & After sheet", "Six worked cleaning examples showing how messy entries became structured fields."],
     ["Summary Stats sheet", "Counts and shares computed from the Clean Data sheet (n = 20)."],
     ["QC Checklist sheet", "The quality-control pass applied before delivery."],
-    ["Confidence levels", "High = two sources agree or official info is clear · Medium = single source or a derived value (e.g. annual price / 12) · Needs verification = conflicting or unclear source information."],
-    ["Source status values", "Cross-checked (2 sources) · Single source · Conflicting sources."],
-    ["Normalization conventions", "Currency USD per user per month · dates ISO 8601 (YYYY-MM-DD) · yes/no/trial-only fields · 8 standard product categories."],
+    ["Confidence levels", "High = official product source with clearly stated values, or two agreeing records · Medium = secondhand source (directory/review) or derived values · Needs verification = conflicting or unclear source information."],
+    ["Source status values", "Cross-checked (2 sources) · Single source · Single source - conflicting details. Source status counts raw records, not trust."],
+    ["Normalization conventions", "Currency USD per month (per-user where stated) · dates ISO 8601 (YYYY-MM-DD) · yes/no/trial-only fields · 8 standard product categories."],
 ]
 end = write_table(ws, 4, ["Item", "Detail"], readme_rows)
 add_caption(ws, end + 1, "Questions about this demo workbook: see README.md in the project folder.", 3)
@@ -231,7 +231,7 @@ auto_fit_row_heights(ws, header_row=4, data_start_row=5)
 ws = wb.create_sheet("Clean Data")
 CLEAN_HEADERS = [
     "Company / Product", "Website", "Product Category", "Primary Use Case",
-    "Target Customer", "Free Plan", "Starting Price (USD/user/mo)", "Billing Model",
+    "Target Customer", "Free Plan", "Starting Price (USD/mo)", "Billing Model",
     "AI Features", "Collaboration Features", "Mobile App", "Platforms",
     "Integrations", "Key Differentiator", "Notes", "Data Confidence",
     "Source Status", "Last Checked",
@@ -291,13 +291,13 @@ setup_sheet(ws, title="Data Cleaning Log — Before vs After", last_col=7)
 ba_rows = [
     [1, "Pricing format",
      'R01 · TASKPILOT PRO — "$9.99 monthly / maybe annual discount"',
-     "Starting Price: $9.99 / user / month\nBilling Model: Per user / month\nAnnual discount: available (unconfirmed)",
-     "Amount, currency, and billing cycle split into structured fields; unconfirmed terms flagged, confirmed later via the official pricing page.",
+     "Starting Price: $9.99 / month\nBilling Model: Monthly - annual discount unconfirmed\nSecond record (R21): price matched (9.99 USD monthly)",
+     "Amount and billing cycle split into structured fields; the second record independently matched the price, while the unconfirmed discount stayed flagged.",
      "Medium → High"],
     [2, "Mobile & platforms",
      'R01 — mobile: "yes / ios android probably"',
-     "Mobile App: Yes\nPlatforms: Web, iOS, Android, Windows, macOS",
-     "Vague platform wording cross-checked against the second source before being accepted.",
+     "Mobile App: Yes\nPlatforms: iOS, Android (both records); Web, Windows, macOS (listed once)",
+     "Vague wording was cross-checked: only iOS and Android are confirmed by both records; the remaining platforms stay single-source listings.",
      "Medium → High"],
     [3, "Annual price conversion",
      'R13 · ChronoBase — "$108 per user billed yearly"',
@@ -311,13 +311,18 @@ ba_rows = [
      "High"],
     [5, "Conflicting sources",
      'R16 · WorkWhale — "$14/user/mo on pricing page - $12 listed on directory"',
-     "Starting Price: $14.00 (official pricing page)\nDirectory value flagged as outdated; row marked Needs verification",
+     "Starting Price: $14.00 (official pricing page figure)\nDirectory figure: conflicting - unresolved\nSource status: single record with conflicting details",
      "Official pricing page outranks directory listings; conflicts are flagged, never silently resolved.",
      "Needs verification"],
     [6, "Date formats",
      'R04 "15 Sept 2026" · R06 "07/22/2026" · R03 "2026/07/28"',
      "2026-09-15 · 2026-07-22 · 2026-07-28 (ISO 8601)",
      "All last-checked dates converted to a single ISO format for sorting and freshness checks.",
+     "High"],
+    [7, "Integration counts",
+     'R05 · Scheduly — integrations: "Google Calendar Outlook Zoom"',
+     "Integrations: Google Calendar, Outlook, Zoom (count not stated)",
+     "Named tools are preserved exactly; totals are never invented - rows whose source gives no count say so.",
      "High"],
 ]
 end = write_table(ws, 4, ["#", "Field", "Raw entry (as captured)", "Cleaned output", "Rule applied", "Confidence"],
@@ -340,8 +345,8 @@ overview = [
     ["Raw source records", "22"],
     ["Duplicates merged", "2 (R21, R22)"],
     ["Standardized fields", "18"],
-    ["Median starting price", f"${median_price:.2f} / user / mo"],
-    ["Average starting price", f"${mean_price:.2f} / user / mo"],
+    ["Median starting price", f"${median_price:.2f} / month"],
+    ["Average starting price", f"${mean_price:.2f} / month"],
     ["Products with a free plan", f"{free_plan['Yes / limited']} of 20 (65%)"],
     ["Products advertising AI features", f"{ai_yes} of 20 (85%)"],
 ]
@@ -364,7 +369,7 @@ row += 1
 bands = [("Under $6", lambda p: p < 6), ("$6 – $9.99", lambda p: 6 <= p < 10),
          ("$10 – $14.99", lambda p: 10 <= p < 15), ("$15 and above", lambda p: p >= 15)]
 rows = [[label, sum(1 for p in prices if fn(p)), share(sum(1 for p in prices if fn(p)))] for label, fn in bands]
-row = write_table(ws, row, ["Price band (USD/user/mo)", "Products", "Share"], rows, title="Starting Price Distribution")
+row = write_table(ws, row, ["Price band (USD/mo)", "Products", "Share"], rows, title="Starting Price Distribution")
 for i in range(len(rows)):
     r0 = row - len(rows) + i
     ws.cell(row=r0, column=3).alignment = align_number()
@@ -419,7 +424,17 @@ for i in range(len(rows)):
     s.number_format = FORMATS["percentage"]
     s.alignment = align_number()
 
-add_caption(ws, row + 1, "All figures derived from the Clean Data sheet. Concept Project — fictional demo data.", 4)
+row += 1
+rows = [[k, v, share(v)] for k, v in sorted(count_by("source_status"), key=lambda kv: -kv[1])]
+row = write_table(ws, row, ["Source status (raw records)", "Products", "Share"], rows, title="Source Status")
+for i in range(len(rows)):
+    r0 = row - len(rows) + i
+    ws.cell(row=r0, column=3).alignment = align_number()
+    s = ws.cell(row=r0, column=4)
+    s.number_format = FORMATS["percentage"]
+    s.alignment = align_number()
+
+add_caption(ws, row + 1, "All figures derived from the Clean Data sheet. Source status counts raw records per product, not trust. Concept Project — fictional demo data.", 4)
 auto_fit_columns(ws, min_width=10, max_width=42, header_row=5, data_start_row=6)
 auto_fit_row_heights(ws, header_row=5, data_start_row=6)
 
@@ -427,22 +442,22 @@ auto_fit_row_heights(ws, header_row=5, data_start_row=6)
 ws = wb.create_sheet("QC Checklist")
 setup_sheet(ws, title="Research Quality-Control Checklist", last_col=5)
 qc_rows = [
-    ["Source recorded", "Every fact is traceable to a dated source",
-     "All 22 raw records carry a source type and a last-checked date (ISO 8601).", "Done"],
+    ["Source recorded", "Each cleaned row maps to a raw record",
+     "All 20 cleaned rows map to raw records R01-R22, each with a source type and a last-checked date (ISO 8601); derived or uncertain values are documented in Notes.", "Done"],
     ["Duplicate checked", "Each product appears exactly once",
      "Two duplicate listings (R21, R22) identified by name + website match and merged into R01 / R02.", "Done"],
     ["Pricing normalized", "One comparable format across all rows",
-     "All prices converted to USD per user per month; annual-only converted ($108/yr → $9.00/mo) and documented.", "Done"],
+     "All prices converted to USD per month (per-user where the source states it); annual-only converted ($108/yr → $9.00/mo) and documented.", "Done"],
     ["Missing values flagged", "Unknowns are marked, never guessed",
      "Empty or unclear source fields are called out in Notes; no placeholder values invented.", "Done"],
     ["Unclear claims marked for verification", "Vague or conflicting claims are visible",
      "WorkWhale (price conflict) and GoalGrid (unclear platforms) marked 'Needs verification'; 4 rows marked Medium.", "Done"],
     ["No unsupported assumptions", "Any assumption is documented",
-     "FocusForge monthly-billing assumption and ChronoBase annual conversion are recorded in Notes.", "Done"],
+     "A field-by-field traceability audit removed values the sources don't state (platform guesses, integration counts); remaining derivations (FocusForge monthly assumption, ChronoBase conversion) are recorded in Notes.", "Done"],
     ["Dates standardized", "One date format everywhere",
      "All last-checked dates converted to ISO 8601 (YYYY-MM-DD).", "Done"],
-    ["Final manual review completed", "A human pass over the full table",
-     "All 20 cleaned rows reviewed end-to-end for consistency before delivery.", "Done"],
+    ["Final review completed", "Dataset consistency reviewed during project QA",
+     "Every cleaned row was re-audited field-by-field against its raw record before publication.", "Done"],
 ]
 end = write_table(ws, 4, ["Check", "What it means", "How it was applied in this project", "Status"], qc_rows)
 for i in range(len(qc_rows)):

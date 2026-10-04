@@ -18,8 +18,8 @@ All companies, products, prices, websites, and sources are **fictional demo data
 
 - **Raw vs. clean data** — `data/raw_research_data.csv` (22 messy records) and `data/cleaned_research_data.csv` (20 products × 18 standardized fields), traceable record by record.
 - **Six-sheet Excel workbook** — Read Me, Clean Data, Raw Data, Before & After, Summary Stats, and a QC Checklist, rebuildable via `scripts/generate_xlsx.py`.
-- **Interactive presentation page** — client brief, 8-step methodology, raw/clean data tables, six worked before/after cleaning examples, a dashboard computed live in the browser from the embedded dataset, competitive findings, quality-control log, and an executive summary.
-- **Verification workflow** — confidence levels (High / Medium / Needs verification), source-status labels (cross-checked / single source / conflicting), ISO 8601 dates, USD-per-user/month price normalization, and a duplicate-merge log.
+- **Interactive presentation page** — client brief, 8-step methodology, raw/clean data tables, seven worked before/after cleaning examples, a dashboard computed live in the browser from the embedded dataset, competitive findings, quality-control log, and an executive summary.
+- **Verification workflow** — confidence levels (High / Medium / Needs verification), source-status labels that count raw records per product (2 cross-checked · 17 single-source · 1 with conflicting details), ISO 8601 dates, USD-per-month price normalization (per-user where stated), and a duplicate-merge log.
 - **AI + human split** — each workflow step shows where AI assists (extraction, normalization, summarization) and where human judgment is required (fact-checking, conflict resolution, final sign-off).
 - **Documented headline findings** — pricing bands, target customers, AI-feature depth, free-plan availability, and market gaps, all computed from the demo dataset.
 
@@ -28,15 +28,15 @@ All companies, products, prices, websites, and sources are **fictional demo data
 - HTML5, CSS3, vanilla JavaScript (presentation page; the dashboard computes from the clean dataset — no frameworks, no build step)
 - CSV / Excel (deliverable datasets; the workbook is generated with Python + `openpyxl`)
 - Python (`scripts/generate_xlsx.py` rebuilds `research_summary.xlsx` from the CSVs)
-- ChatGPT / AI-assisted workflow (extraction support, normalization suggestions, summary drafting — with human verification, as documented on the page)
+- ChatGPT / AI-assisted workflow (extraction support, normalization suggestions, summary drafting — with a human-verification checkpoint, as documented on the page)
 
 ## What This Project Demonstrates
 
 - Defining research criteria, field lists, and normalization rules before collecting data
 - Cleaning messy source records: formatting, deduplication, flagging uncertainty, never guessing
-- Traceability: every cleaned value traceable to a dated, typed source; every merge logged
+- Traceability: each cleaned row maps back to its corresponding raw research record (R01–R22), with derived or uncertain values explicitly documented; every merge logged
 - Turning a cleaned dataset into findings, a dashboard, and a one-page executive summary
-- Honest AI-assisted habits: AI drafts and accelerates, a human verifies and decides
+- Honest AI-assisted habits: the workflow separates AI drafting from a human-verification checkpoint (a demonstrated workflow, not claimed client experience)
 - Clear business communication: what a client would actually receive, and in what file
 
 ## Screenshots
@@ -54,6 +54,7 @@ All companies, products, prices, websites, and sources are **fictional demo data
 ## Repository Notes
 
 - `data/` contains only fictional demo data — no personal or private information. Websites use the reserved `.example` TLD and cannot resolve to real sites.
+- A field-by-field traceability audit maps every cleaned value to its raw record. Values the sources don't state (platform guesses, invented integration counts) were removed, and source-status labels reflect the actual number of raw records per product.
 - To regenerate the workbook after editing the CSVs: `pip install openpyxl` then `python scripts/generate_xlsx.py`.
 
 ## Disclaimer
