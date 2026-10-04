@@ -209,7 +209,7 @@ setup_sheet(ws, title="AI Productivity Tools — Research & Competitive Landscap
 readme_rows = [
     ["Project type", "Concept Project — created to demonstrate AI-assisted research, data organization, verification, and business reporting. Not real client work."],
     ["Prepared", "October 2026"],
-    ["Prepared by", "heyjdy (GitHub) — Research & Data Support"],
+    ["Prepared by", "Research & Data Support — Concept Portfolio"],
     ["Fictional-data disclaimer", "All companies, products, prices, websites, and sources in this workbook are fictional demo data. .example domains are reserved for documentation and cannot belong to real sites."],
     ["Clean Data sheet", "20 products x 18 standardized fields — the decision-ready dataset."],
     ["Raw Data sheet", "22 source records exactly as captured, including 2 duplicate listings found during research."],
