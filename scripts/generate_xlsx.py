@@ -22,10 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 OUT_PATH = os.path.join(DATA_DIR, "research_summary.xlsx")
 
-XLSX_SKILL_DIR = os.environ.get(
-    "XLSX_SKILL_DIR",
-    r"C:\Users\d113j\.zcode\cli\plugins\cache\zcode-plugins-official\spreadsheets\0.1.7\skills\xlsx",
-)
+# Optional: set XLSX_SKILL_DIR to a directory containing templates/base.py (a design-token
+# module) to reuse its styles. Without it the script falls back to equivalent built-in styles.
+XLSX_SKILL_DIR = os.environ.get("XLSX_SKILL_DIR", "")
 sys.path.insert(0, os.path.join(XLSX_SKILL_DIR, "templates"))
 
 try:
